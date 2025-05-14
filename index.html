@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAKI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Assets/icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="Assets/icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-size: cover;
+            background-color: #ecbd7f;
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
+
+	@media (max-width: 768px) {
+    body {
+        background-size: cover;
+	background-color: #ecbd7f;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+main, .content {
+    padding-bottom: 150px; /* Make this a bit more than the footer height */
+}
+
+header {
+  background-color: #737e81;
+  padding: clamp(0.5rem, 2vw, 1.5rem);
+  color: white;
+  font-family: Arial, sans-serif;
+  border-bottom: 2px solid black;
+}
+
+/* Flex container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap; /* Ensures elements stay on one line */
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+/* Left */
+.header-left h1 {
+    font-size: clamp(2.25rem, 4vw, 2rem);
+    margin: 0;
+    text-align: center;
+    font-family: 'Akaya Kanadaka', cursive;
+    color: #fff;
+    animation: bearGrowl 2s ease-in-out infinite, bearShake 1.5s ease-in-out infinite;
+}
+
+/* Center nav */
+.header-center {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+  flex: 1;
+  justify-content: center;
+  flex-wrap: nowrap; /* Prevents wrapping */
+}
+
+.header-center a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+}
+
+/* Right nav container */
+.header-right {
+  display: flex;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  flex-wrap: nowrap; /* Prevents wrapping */
+  justify-content: flex-end;
+}
+
+/* Buy Now button with pre-hover animation */
+.header-right .button {
+  background-color: green;
+  border: 2px solid black;
+  padding: clamp(0.3rem, 1vw, 0.6rem) clamp(0.6rem, 2vw, 1.2rem);
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Hover animation */
+.header-right .button:hover {
+  background-color: black;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Pulse animation (before hover) */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Optional: Shine effect on hover */
+.header-right .button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0)
+  );
+  transform: skewX(-25deg);
+}
+
+/* Trigger shine on hover */
+.header-right .button:hover::before {
+  left: 125%;
+  transition: left 0.7s ease;
+}
+
+/* Menu button */
+.menu-button {
+  display: none;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+  .mobile-menu {
+    display: none;
+}
+
+
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+
+  /* Hide center and right sections inside header */
+  .header-center,
+  .header-right {
+    display: none;
+  }
+
+body.menu-open {
+  overflow: hidden; /* Prevent scrolling */
+}
+
+  /* Show menu button */
+  .menu-button {
+    display: block;
+    font-size: 0.9rem;
+    background: #151830;
+    border: 1px solid #fff;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+    z-index: 1001;
+  }
+
+.mobile-menu {
+  position: fixed;
+  top: 58px;
+  left: 0;
+  right: 0;
+  bottom: auto; /* Don’t stretch to bottom */
+  max-height: none;
+  height: calc(100vh - 58px); /* fills from below header to bottom */
+  background-color: #f2ca96;
+  color: black;
+  z-index: 1000;
+  flex-direction: column;
+  align-items: flex-start; 
+  gap: 2rem;
+  padding: clamp(1rem, 4vw, 2rem);
+  overflow-y: auto;
+  display: none;
+}
+
+
+
+  .mobile-menu a {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  text-decoration: none;
+  top: 58px;
+  color: black;
+  width: 100%;
+  position: relative;
+  padding-bottom: clamp(0.5rem, 1vw, 1rem);
+}
+
+  .mobile-menu.show {
+    display: flex;
+  }
+
+/* Disable ::after for links inside .mobile-menu-bottom */
+.mobile-menu-bottom a::after {
+  content: none;
+}
+
+/* Keep the ::after effect for other links inside .mobile-menu */
+.mobile-menu a:not(.mobile-menu-bottom a)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #db9840;
+}
+
+
+  /* Header-left centered on mobile */
+  .header-left {
+    margin: 0 auto;
+  }
+
+.mobile-menu-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ Horizontally center children */
+  justify-content: center; /* ✅ Vertically center if needed */
+  gap: 1rem;
+  margin-top: auto;
+  padding-bottom: 22rem; /* add some space from screen bottom */
+  width: 100%; /* ✅ Ensure full width for horizontal centering */
+}
+
+.social-icons {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2rem);
+    justify-content: center;
+  }
+
+  .icon-button img {
+    width: clamp(46px, 8vw, 60px);
+  }
+
+.buy-button {
+  background-color: #1ceb1c;
+  color: #151830;
+  padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 3vw, 2rem);
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center; /* Center the button text */
+  display: inline-block; /* Makes the button fit content */
+  width: auto; /* Adjusts the width to the content */
+  max-width: 250px; /* Set a max width if needed */
+  margin: 0 auto; /* Centers the button horizontally */
+}
+
+
+  .buy-button:hover {
+    background-color: #e6b800;
+  }
+}
+
+.hero-section {
+  display: flex;
+  align-items: flex-start; /* align content to the top */
+  justify-content: space-between;
+  padding: 0 7vw;
+  height: 80vh;
+  box-sizing: border-box;
+}
+
+.hero-text {
+  flex: 1;
+  padding-right: 2rem;
+  color: #151830;
+  font-size: clamp(0.5rem, 2vw, 2rem);
+  line-height: 1.6;
+  font-family: 'Akaya Kanadaka', cursive;
+  margin-top: clamp(-4rem, -8vw, -8rem);
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;    
+  align-items: flex-start;
+  margin-top: clamp(-20rem, -10vw, -5rem);    
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  object-fit: contain;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-family: 'Akaya Kanadaka', cursive;
+}
+
+
+.launch-container {
+  background-color: white;
+  padding: 3px 6px; /* smaller padding */
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 0.5rem;
+  border: 1px solid black;
+  font-size: 1rem; /* smaller text */
+  display: inline-block; /* prevents full-width stretching */
+}
+
+
+.launch-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #151830;
+}
+
+.copy-container {
+  display: flex;
+  align-items: center;
+}
+
+.copy-container input {
+  padding: 8px 12px;
+  font-size: 1.3rem;
+  flex-grow: 1;
+  margin-right: 10px;
+  border-radius: 8px;
+  border: 1px white;
+}
+
+.copy-button {
+  background-color: #fcd228;
+  color: #151830;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 1px solid black;
+}
+
+.copy-button:hover {
+  background-color: #e6b800;
+}
+
+/* Mobile version - Adjustments for small screen sizes */
+@media screen and (max-width: 768px) {
+  .hero-section {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically on mobile */
+    padding: 0 5vw; /* Adjust padding for mobile */
+    height: auto; /* Let the section grow naturally on mobile */
+    align-items: center;        /* Center children horizontally */
+    text-align: center;         /* Inherit centering for children */
+  }
+
+  .hero-text {
+    margin-top: 0; /* Remove negative margin on mobile */
+    text-align: center; /* Center text */
+    font-size: clamp(0.8rem, 2vw, 2rem);
+    width: 100%;
+  }
+
+  .hero-image {
+    margin-top: clamp(-45rem, -20vw, -13rem);
+    padding-top: clamp(10px, 5vw, 40px);
+    width: 100%; /* Ensure image takes up the full width */
+    justify-content: center; /* Center the image */
+    align-items: flex-start; /* Align the image at the top */
+    order: -1; /* Make sure the image comes first */
+  }
+
+  .hero-image img {
+    width: 100%; /* Ensure image takes up the full width */
+    max-width: 500px; /* Set a max width */
+    height: auto;
+    object-fit: contain; /* Keep the aspect ratio intact */
+  }
+
+.hero-title {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  text-align: center;
+  margin: 0 auto;
+  width: 80%;
+  box-sizing: border-box; /* Make sure padding doesn't cause overflow */
+}
+
+
+  .launch-container {
+    font-size: clamp(0.8rem, 2.5vw, 1.25rem);
+    padding: clamp(1px, 0.5vw, 3px) clamp(2px, 1vw, 6px);
+  }
+
+  .launch-text {
+    font-size: 1.5rem; /* Adjust launch text size */
+  }
+
+  .copy-button {
+    padding: 4px 10px; /* Adjust button padding */
+    font-size: 0.8rem; /* Adjust button font size */
+  }
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  background: #dc3545;
+  border-top: 2px solid #151830;
+  border-bottom: 2px solid #151830;
+  font-family: 'Akaya Kanadaka', cursive;
+  margin-top: clamp(-25rem, 0vw, 0rem);
+}
+
+.marquee-track {
+  display: flex;
+  width: fit-content;
+  animation: scroll 25s linear infinite;
+}
+
+.marquee-text {
+  font-size: clamp(1.7rem, 3.7vw, 2.7rem);
+  white-space: nowrap;
+  padding-right: 2rem;
+  font-weight: bold;
+  font-family: 'Akaya Kanadaka', cursive;
+
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile-specific tweaks */
+@media screen and (max-width: 768px) {
+  .marquee-container {
+    margin-top: clamp(3rem, -3vw, 0rem);
+    padding: 0.05rem 0;
+
+  }
+
+  .marquee-text {
+    font-size: clamp(1.2rem, 6vw, 2.2rem);
+    padding-right: 1.2rem;
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.tokenomics-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  background: transparent;
+  color: white;
+  text-align: center;
+}
+
+.tokenomics-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.tokenomics-subtitle {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 30px;
+  font-weight: 500;
+  color: black;
+}
+
+.pie-wrapper {
+  display: flex;
+  justify-content: center; /* Keeps content centered in container */
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  margin-left: 200px;
+  position: relative;
+}
+
+.pie-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto; /* Prevent resizing */
+}
+
+.pie-chart {
+  width: clamp(250px, 40vw, 400px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ffc107 0% 5%,       /* Yellow - Team */
+    #dc3545 5% 10%,      /* Red - Marketing */
+    #007bff 10% 100%     /* Blue - Community */
+  );
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* For smooth transition */
+}
+
+/* Glow effect */
+.pie-chart:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 0 30px 10px rgba(0, 123, 255, 0.7); /* Blue glow */
+}
+
+/* Glowing effect on the labels */
+.pie-labels {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ensures all labels start from the same left */
+  text-align: left;        /* Aligns text inside each span to the left */
+  gap: 12px;
+  color: black;
+  font-weight: 600;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.6); /* Soft glow effect */
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* On hover: increase the glow effect of labels */
+.pie-chart:hover + .pie-labels {
+  color: #007bff; /* Blue text color when hovered */
+  text-shadow: 0 0 20px rgba(0, 123, 255, 1); /* Glowing blue text */
+}
+
+.tokenomics-info p {
+  font-size: 1.1rem;
+  margin: 4px 0;
+  color: black;
+}
+
+
+
+.tokenomics-info p {
+  font-size: 1.1rem;
+  margin: 4px 0;
+  color: black;
+}
+
+
+@media screen and (max-width: 768px) {
+  .pie-wrapper {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 0; /* Remove the desktop left offset */
+    gap: clamp(20px, 5vw, 40px);
+  }
+
+  .pie-labels {
+  align-items: flex-start; /* Ensures all labels start from the same left */
+  text-align: left;        /* Aligns text inside each span to the left */
+    font-size: clamp(0.95rem, 3vw, 1.1rem);
+  }
+
+  .tokenomics-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .tokenomics-subtitle {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+  }
+
+  .pie-chart {
+    width: clamp(200px, 60vw, 300px);
+  }
+
+  .tokenomics-info p {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  }
+}
+
+/* Divider line */
+.section-divider {
+  border: none;
+  border-top: 2px solid black;
+  width: 100%;
+  margin: 60px 0 30px;
+}
+
+/* MEMES Section */
+.memes-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.memes-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.memes-subtitle {
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  color: black;
+  margin-bottom: 40px;
+}
+
+/* Marquee-style image track */
+.memes-marquee {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.memes-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: scroll-memes 100s linear infinite; /* Adjust 100s as needed */
+}
+
+.memes-track img {
+  height: clamp(120px, 20vw, 180px);
+  flex-shrink: 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.memes-track img:hover {
+  transform: scale(1.05);
+}
+
+/* Scrolling animation */
+@keyframes scroll-memes {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+footer {
+  text-align: center;
+  padding: clamp(0.1rem, 0.3vw, 0.4rem);
+  background-color: #151830;
+  color: white;
+  font-size: clamp(0.5rem, 0.8vw, 0.9rem);
+  position: relative; /* Ensure it's not affected by z-index overlays */
+  z-index: 1002; /* Higher than .mobile-menu */
+}
+    </style>
+
+</head>
+<body>
+<main style="padding-bottom: 150px;"> 
+
+  <header>
+    <div class="header-container">
+      
+      <!-- Left -->
+      <div class="header-left">
+        <h1>$JAKI</h1>
+      </div>
+      
+	<!-- Menu button (only visible on mobile) -->
+    <button class="menu-button" aria-label="Toggle Menu">☰</button>
+
+      <div class="header-center">
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#memes">Memes</a>
+      </div>
+      
+      <!-- Right -->
+      <div class="header-right">
+	<a href="https://x.com/jaki_on_sol" target="_blank" rel="noopener noreferrer" class="icon-button">
+  	<img src="Assets/Twitter.png" alt="Twitter" width="50">
+	</a>
+	<a href="https://kick.com/jp-flex" target="_blank" rel="noopener noreferrer" class="icon-button">
+  	<img src="Assets/Telegram.png" alt="Telegram" width="50">
+	</a>
+        <a href="https://pump.fun/board" target="_blank" rel="noopener noreferrer" class="button">Buy Now</a>
+      </div>
+
+    </div>
+
+
+  </header>
+
+<!-- Mobile full-screen menu (hidden by default) -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#tokenomics">Tokenomics</a>
+  <a href="#memes">Memes</a>
+
+  <!-- Bottom section inside mobile menu -->
+  <div class="mobile-menu-bottom">
+    <div class="social-icons">
+      <a href="https://x.com/jaki_on_sol" target="_blank" rel="noopener noreferrer" class="icon-button">
+        <img src="Assets/Twitter.png" alt="Twitter" />
+      </a>
+      <a href="https://x.com/jaki_on_sol" target="_blank" rel="noopener noreferrer" class="icon-button">
+        <img src="Assets/Telegram.png" alt="Telegram" />
+      </a>
+    </div>
+
+    <a href="https://pump.fun/board" target="_blank" rel="noopener noreferrer" class="buy-button">Buy Now</a>
+  </div>
+</div>
+
+</main>
+
+<div class="hero-section">
+  <div class="hero-text">
+  <p class="hero-title">$JAKI</p>
+  <p>
+    JAKI is the undisputed guardian of the Verdant Forests. Once a loner, now a hero! A mighty Grizzly Bear whose strength and resilience echo through the trees, JAKI roams the wild with unmatched power. Now, ready to make its mark on the Solana blockchain, JAKI brings the untamed spirit of the forest to the world of memecoins, poised to leave an unforgettable legacy in the crypto ecosystem.
+  </p>
+    <!-- White container below with Launching Soon and COPY button -->
+    <div class="launch-container">
+      <div class="copy-container">
+        CA:  <input type="text" value="Launching Soon" id="copyText" readonly />
+        <button class="copy-button" onclick="copyText()">COPY</button>
+      </div>
+    </div>
+
+</div>
+  <div class="hero-image">
+    <img src="Assets/Jaki2.png" alt="JAKI Bear" />
+  </div>
+</div>
+
+
+<div class="marquee-container">
+  <div class="marquee-track">
+    <span class="marquee-text">
+      $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~
+    </span>
+    <span class="marquee-text">
+      $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~ $JAKI ~
+    </span>
+  </div>
+</div>
+
+<section id="tokenomics">
+<div class="tokenomics-container">
+  <h2 class="tokenomics-title">TOKENOMICS</h2>
+  <h3 class="tokenomics-subtitle"><b>$JAKI</b> Tokenomics</h3>
+
+  <div class="pie-wrapper">
+  <div class="pie-center">
+    <div class="pie-chart">
+      <div class="slice slice-team"></div>
+      <div class="slice slice-marketing"></div>
+      <div class="slice slice-community"></div>
+    </div>
+  </div>
+
+  <div class="pie-labels">
+    <span class="label-team">🟡 - 5% Team</span>
+    <span class="label-marketing">🔴 - 5% Marketing</span>
+    <span class="label-community">🔵 - 90% Community</span>
+  </div>
+</div>
+
+
+  <div class="tokenomics-info">
+    <p>𝐓𝐨𝐭𝐚𝐥 𝐒𝐮𝐩𝐩𝐥𝐲: 𝟏 𝐁𝐢𝐥𝐥𝐢𝐨𝐧 $𝐉𝐀𝐊𝐈</p>
+    <p>𝐅𝐚𝐢𝐫 𝐥𝐚𝐮𝐧𝐜𝐡 𝐢𝐧 <a href="https://pump.fun/board" target="_blank" rel="noopener noreferrer"><u><i>𝐩𝐮𝐦𝐩.𝐟𝐮𝐧</i></u></a></p>
+  </div>
+</div>
+</section>
+
+
+<hr class="section-divider" />
+
+
+<section id="memes">
+<div class="memes-section">
+  <h2 class="memes-title">MEMES</h2>
+  <p class="memes-subtitle">Capture every journey of $JAKI</p>
+
+  <div class="memes-marquee">
+    <div class="memes-track">
+      <!-- Original Set -->
+      <img src="Assets/meme001.png" alt="Meme 1" />
+      <img src="Assets/meme002.png" alt="Meme 2" />
+      <img src="Assets/meme003.png" alt="Meme 3" />
+      <img src="Assets/meme004.png" alt="Meme 4" />
+      <img src="Assets/meme005.png" alt="Meme 5" />
+      <img src="Assets/meme006.png" alt="Meme 6" />
+      <img src="Assets/meme007.png" alt="Meme 7" />
+      <img src="Assets/meme008.png" alt="Meme 8" />
+      <img src="Assets/meme009.png" alt="Meme 9" />
+      <img src="Assets/meme010.png" alt="Meme 10" />
+      <img src="Assets/meme011.png" alt="Meme 11" />
+      <img src="Assets/meme012.png" alt="Meme 12" />
+      <img src="Assets/meme013.png" alt="Meme 13" />
+      <img src="Assets/meme014.png" alt="Meme 14" />
+      <img src="Assets/meme015.png" alt="Meme 15" />
+      <img src="Assets/meme016.png" alt="Meme 16" />
+      <img src="Assets/meme017.png" alt="Meme 17" />
+      <img src="Assets/meme018.png" alt="Meme 18" />
+      <img src="Assets/meme019.png" alt="Meme 19" />
+      <img src="Assets/meme020.jpg" alt="Meme 20" />
+      <img src="Assets/meme021.png" alt="Meme 21" />
+      <img src="Assets/meme022.png" alt="Meme 22" />
+      <img src="Assets/meme023.png" alt="Meme 23" />
+      <img src="Assets/meme024.png" alt="Meme 24" />
+      <img src="Assets/meme025.png" alt="Meme 25" />
+      <img src="Assets/meme026.png" alt="Meme 26" />
+      <img src="Assets/meme027.png" alt="Meme 27" />
+      <img src="Assets/meme028.png" alt="Meme 28" />
+      <img src="Assets/meme029.png" alt="Meme 29" />
+      <img src="Assets/meme030.png" alt="Meme 30" />
+      <img src="Assets/meme031.png" alt="Meme 31" />
+      <img src="Assets/meme032.png" alt="Meme 32" />
+      <img src="Assets/meme033.png" alt="Meme 33" />
+      <img src="Assets/meme034.png" alt="Meme 34" />
+      <img src="Assets/meme035.png" alt="Meme 35" />
+      <img src="Assets/meme036.png" alt="Meme 36" />
+      <img src="Assets/meme037.png" alt="Meme 37" />
+
+      <!-- Duplicate Set for seamless looping -->
+      <img src="Assets/meme001.png" alt="Meme 1" />
+      <img src="Assets/meme002.png" alt="Meme 2" />
+      <img src="Assets/meme003.png" alt="Meme 3" />
+      <img src="Assets/meme004.png" alt="Meme 4" />
+      <img src="Assets/meme005.png" alt="Meme 5" />
+      <img src="Assets/meme006.png" alt="Meme 6" />
+      <img src="Assets/meme007.png" alt="Meme 7" />
+      <img src="Assets/meme008.png" alt="Meme 8" />
+      <img src="Assets/meme009.png" alt="Meme 9" />
+      <img src="Assets/meme010.png" alt="Meme 10" />
+      <img src="Assets/meme011.png" alt="Meme 11" />
+      <img src="Assets/meme012.png" alt="Meme 12" />
+      <img src="Assets/meme013.png" alt="Meme 13" />
+      <img src="Assets/meme014.png" alt="Meme 14" />
+      <img src="Assets/meme015.png" alt="Meme 15" />
+      <img src="Assets/meme016.png" alt="Meme 16" />
+      <img src="Assets/meme017.png" alt="Meme 17" />
+      <img src="Assets/meme018.png" alt="Meme 18" />
+      <img src="Assets/meme019.png" alt="Meme 19" />
+      <img src="Assets/meme020.jpg" alt="Meme 20" />
+      <img src="Assets/meme021.png" alt="Meme 21" />
+      <img src="Assets/meme022.png" alt="Meme 22" />
+      <img src="Assets/meme023.png" alt="Meme 23" />
+      <img src="Assets/meme024.png" alt="Meme 24" />
+      <img src="Assets/meme025.png" alt="Meme 25" />
+      <img src="Assets/meme026.png" alt="Meme 26" />
+      <img src="Assets/meme027.png" alt="Meme 27" />
+      <img src="Assets/meme028.png" alt="Meme 28" />
+      <img src="Assets/meme029.png" alt="Meme 29" />
+      <img src="Assets/meme030.png" alt="Meme 30" />
+      <img src="Assets/meme031.png" alt="Meme 31" />
+      <img src="Assets/meme032.png" alt="Meme 32" />
+      <img src="Assets/meme033.png" alt="Meme 33" />
+      <img src="Assets/meme034.png" alt="Meme 34" />
+      <img src="Assets/meme035.png" alt="Meme 35" />
+      <img src="Assets/meme036.png" alt="Meme 36" />
+      <img src="Assets/meme037.png" alt="Meme 37" />
+
+    </div>
+  </div>
+</div>
+</section>
+
+<script>
+const menuButton = document.querySelector('.menu-button');
+const mobileMenu = document.getElementById('mobileMenu');
+
+menuButton.addEventListener('click', function () {
+  // Toggle the mobile menu visibility
+  mobileMenu.classList.toggle('show');
+  
+  // Toggle the body class to prevent scrolling
+  document.body.classList.toggle('menu-open');
+});
+
+// Close menu when a link is clicked (optional but good for UX)
+document.querySelectorAll('#mobileMenu a').forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('show');
+    document.body.classList.remove('menu-open');
+  });
+});
+
+</script>
+
+<script>
+
+function copyText() {
+  var copyText = document.getElementById("copyText");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+  document.execCommand("copy");
+}
+
+</script>
+
+
+
+<footer>
+    <p>
+  <b>Disclaimer:</b>
+  <span style="color: #fcd228;"><b>$JAKI</b></span> is a memecoin created solely for entertainment purposes.
+  Nothing on this website should be considered financial advice or an endorsement to buy, sell, or hold any cryptocurrency.
+  Digital assets are highly volatile and carry substantial risk.
+  Always conduct your own research and consult a licensed financial advisor before making any financial decisions.
+</p>
+
+<p>&copy; $𝐉𝐀𝐊𝐈</span> 𝟐𝟎𝟐𝟓</p>
+</footer>
+
+
+</body>
+</html>
