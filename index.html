@@ -11,6 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap" rel="stylesheet">
 
     <style>
+	* {
+  	    margin: 0;
+  	    padding: 0;
+  	    box-sizing: border-box;
+	}
+
         body {
             background-size: cover;
             background-color: #ecbd7f;
@@ -343,6 +349,7 @@ body.menu-open {
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
   border: 1px solid black;
   font-size: 1rem; /* smaller text */
   display: inline-block; /* prevents full-width stretching */
@@ -432,7 +439,8 @@ body.menu-open {
   .launch-container {
     font-size: clamp(0.8rem, 2.5vw, 1.25rem);
     padding: clamp(1px, 0.5vw, 3px) clamp(2px, 1vw, 6px);
-  }
+    margin-bottom: 1.5rem;
+}
 
   .launch-text {
     font-size: 1.5rem; /* Adjust launch text size */
@@ -452,7 +460,7 @@ body.menu-open {
   border-top: 2px solid #151830;
   border-bottom: 2px solid #151830;
   font-family: 'Akaya Kanadaka', cursive;
-  margin-top: clamp(-25rem, 0vw, 0rem);
+  margin-top: clamp(-45rem, 2vw, 1.5rem);
 }
 
 .marquee-track {
